@@ -1,0 +1,83 @@
+[
+    {
+        "state": "Maharashtra",
+        "city": "Mumbai",
+        "district": "Mumbai",
+        "pincode": "400001",
+        "latitude": 19.0760,
+        "longitude": 72.8777
+    },
+    {
+        "state": "Maharashtra",
+        "city": "Pune",
+        "district": "Pune",
+        "pincode": "411001",
+        "latitude": 18.5204,
+        "longitude": 73.8567
+    },
+    {
+        "state": "Karnataka",
+        "city": "Bangalore",
+        "district": "Bangalore Urban",
+        "pincode": "560001",
+        "latitude": 12.9716,
+        "longitude": 77.5946
+    },
+    {
+        "state": "Karnataka",
+        "city": "Mysore",
+        "district": "Mysuru",
+        "pincode": "570001",
+        "latitude": 12.2958,
+        "longitude": 76.6394
+    },
+    {
+        "state": "Tamil Nadu",
+        "city": "Chennai",
+        "district": "Chennai",
+        "pincode": "600001",
+        "latitude": 13.0827,
+        "longitude": 80.2707
+    },
+    {
+        "state": "Delhi",
+        "city": "New Delhi",
+        "district": "New Delhi",
+        "pincode": "110001",
+        "latitude": 28.6139,
+        "longitude": 77.2090
+    },
+    {
+        "state": "Gujarat",
+        "city": "Ahmedabad",
+        "district": "Ahmedabad",
+        "pincode": "380001",
+        "latitude": 23.0225,
+        "longitude": 72.5714
+    },
+    {
+        "state": "West Bengal",
+        "city": "Kolkata",
+        "district": "Kolkata",
+        "pincode": "700001",
+        "latitude": 22.5726,
+        "longitude": 88.3639
+    },
+    {
+        "state": "Rajasthan",
+        "city": "Jaipur",
+        "district": "Jaipur",
+        "pincode": "302001",
+        "latitude": 26.9124,
+        "longitude": 75.7873
+    },
+    {
+        "state": "Uttar Pradesh",
+        "city": "Lucknow",
+        "district": "Lucknow",
+        "pincode": "226001",
+        "latitude": 26.8467,
+        "longitude": 80.9462
+    }
+]
+

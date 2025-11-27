@@ -1,0 +1,12 @@
+state,city,district,pincode,latitude,longitude
+Maharashtra,Mumbai,Mumbai,400001,19.0760,72.8777
+Maharashtra,Pune,Pune,411001,18.5204,73.8567
+Karnataka,Bangalore,Bangalore Urban,560001,12.9716,77.5946
+Karnataka,Mysore,Mysuru,570001,12.2958,76.6394
+Tamil Nadu,Chennai,Chennai,600001,13.0827,80.2707
+Delhi,New Delhi,New Delhi,110001,28.6139,77.2090
+Gujarat,Ahmedabad,Ahmedabad,380001,23.0225,72.5714
+West Bengal,Kolkata,Kolkata,700001,22.5726,88.3639
+Rajasthan,Jaipur,Jaipur,302001,26.9124,75.7873
+Uttar Pradesh,Lucknow,Lucknow,226001,26.8467,80.9462
+

@@ -1,0 +1,101 @@
+state,city,district,pincode,latitude,longitude
+Andhra Pradesh,Visakhapatnam,Visakhapatnam,530001,17.6868,83.2185
+Andhra Pradesh,Vijayawada,Krishna,520001,16.5062,80.6480
+Andhra Pradesh,Guntur,Guntur,522001,16.3067,80.4365
+Andhra Pradesh,Tirupati,Chittoor,517501,13.6288,79.4192
+Arunachal Pradesh,Itanagar,Papum Pare,791111,27.0844,93.6053
+Arunachal Pradesh,Naharlagun,Papum Pare,791110,27.1047,93.6952
+Assam,Guwahati,Kamrup Metropolitan,781001,26.1445,91.7362
+Assam,Silchar,Cachar,788001,24.8333,92.7789
+Assam,Dibrugarh,Dibrugarh,786001,27.4728,94.9120
+Bihar,Patna,Patna,800001,25.5941,85.1376
+Bihar,Gaya,Gaya,823001,24.7960,84.9914
+Bihar,Bhagalpur,Bhagalpur,812001,25.2445,86.9718
+Bihar,Muzaffarpur,Muzaffarpur,842001,26.1209,85.3647
+Chhattisgarh,Raipur,Raipur,492001,21.2514,81.6296
+Chhattisgarh,Bhilai,Durg,490001,21.1938,81.3509
+Chhattisgarh,Bilaspur,Bilaspur,495001,22.0735,82.1364
+Goa,Panaji,North Goa,403001,15.4909,73.8278
+Goa,Margao,South Goa,403601,15.2733,73.9583
+Gujarat,Ahmedabad,Ahmedabad,380001,23.0225,72.5714
+Gujarat,Surat,Surat,395001,21.1702,72.8311
+Gujarat,Vadodara,Vadodara,390001,22.3072,73.1812
+Gujarat,Rajkot,Rajkot,360001,22.3039,70.8022
+Gujarat,Bhavnagar,Bhavnagar,364001,21.7645,72.1519
+Haryana,Gurgaon,Gurugram,122001,28.4089,77.0378
+Haryana,Faridabad,Faridabad,121001,28.4089,77.3178
+Haryana,Panipat,Panipat,132103,29.3909,76.9635
+Haryana,Ambala,Ambala,133001,30.3782,76.7767
+Himachal Pradesh,Shimla,Shimla,171001,31.1048,77.1734
+Himachal Pradesh,Dharamshala,Kangra,176215,32.2190,76.3234
+Himachal Pradesh,Manali,Kullu,175131,32.2396,77.1887
+Jharkhand,Ranchi,Ranchi,834001,23.3441,85.3096
+Jharkhand,Jamshedpur,East Singhbhum,831001,22.8046,86.2029
+Jharkhand,Dhanbad,Dhanbad,826001,23.7957,86.4304
+Karnataka,Bangalore,Bangalore Urban,560001,12.9716,77.5946
+Karnataka,Mysore,Mysuru,570001,12.2958,76.6394
+Karnataka,Hubli,Dharwad,580001,15.3647,75.1240
+Karnataka,Mangalore,Dakshina Kannada,575001,12.9141,74.8560
+Karnataka,Belgaum,Belagavi,590001,15.8497,74.4977
+Kerala,Kochi,Ernakulam,682001,9.9312,76.2673
+Kerala,Thiruvananthapuram,Thiruvananthapuram,695001,8.5241,76.9366
+Kerala,Kozhikode,Kozhikode,673001,11.2588,75.7804
+Kerala,Thrissur,Thrissur,680001,10.5276,76.2144
+Madhya Pradesh,Bhopal,Bhopal,462001,23.2599,77.4126
+Madhya Pradesh,Indore,Indore,452001,22.7196,75.8577
+Madhya Pradesh,Gwalior,Gwalior,474001,26.2183,78.1828
+Madhya Pradesh,Jabalpur,Jabalpur,482001,23.1815,79.9864
+Maharashtra,Mumbai,Mumbai,400001,19.0760,72.8777
+Maharashtra,Pune,Pune,411001,18.5204,73.8567
+Maharashtra,Nagpur,Nagpur,440001,21.1458,79.0882
+Maharashtra,Nashik,Nashik,422001,19.9975,73.7898
+Maharashtra,Aurangabad,Aurangabad,431001,19.8762,75.3433
+Manipur,Imphal,Imphal East,795001,24.8170,93.9368
+Meghalaya,Shillong,East Khasi Hills,793001,25.5788,91.8933
+Mizoram,Aizawl,Aizawl,796001,23.7271,92.7176
+Nagaland,Kohima,Kohima,797001,25.6750,94.1086
+Odisha,Bhubaneswar,Khordha,751001,20.2961,85.8245
+Odisha,Cuttack,Cuttack,753001,20.4625,85.8829
+Odisha,Rourkela,Sundargarh,769001,22.2604,84.8536
+Punjab,Ludhiana,Ludhiana,141001,30.9010,75.8573
+Punjab,Amritsar,Amritsar,143001,31.6340,74.8723
+Punjab,Jalandhar,Jalandhar,144001,31.3260,75.5762
+Punjab,Patiala,Patiala,147001,30.3398,76.3869
+Rajasthan,Jaipur,Jaipur,302001,26.9124,75.7873
+Rajasthan,Jodhpur,Jodhpur,342001,26.2389,73.0243
+Rajasthan,Udaipur,Udaipur,313001,24.5854,73.7125
+Rajasthan,Kota,Kota,324001,25.2138,75.8648
+Rajasthan,Ajmer,Ajmer,305001,26.4499,74.6399
+Sikkim,Gangtok,East Sikkim,737101,27.3389,88.6065
+Tamil Nadu,Chennai,Chennai,600001,13.0827,80.2707
+Tamil Nadu,Coimbatore,Coimbatore,641001,11.0168,76.9558
+Tamil Nadu,Madurai,Madurai,625001,9.9252,78.1198
+Tamil Nadu,Tiruchirappalli,Tiruchirappalli,620001,10.7905,78.7047
+Tamil Nadu,Salem,Salem,636001,11.6643,78.1460
+Telangana,Hyderabad,Hyderabad,500001,17.3850,78.4867
+Telangana,Warangal,Warangal Urban,506001,17.9689,79.5941
+Telangana,Nizamabad,Nizamabad,503001,18.6715,78.0988
+Tripura,Agartala,West Tripura,799001,23.8315,91.2868
+Uttar Pradesh,Lucknow,Lucknow,226001,26.8467,80.9462
+Uttar Pradesh,Kanpur,Kanpur Nagar,208001,26.4499,80.3319
+Uttar Pradesh,Agra,Agra,282001,27.1767,78.0081
+Uttar Pradesh,Varanasi,Varanasi,221001,25.3176,82.9739
+Uttar Pradesh,Allahabad,Prayagraj,211001,25.4358,81.8463
+Uttar Pradesh,Meerut,Meerut,250001,28.9845,77.7064
+Uttarakhand,Dehradun,Dehradun,248001,30.3165,78.0322
+Uttarakhand,Haridwar,Haridwar,249401,29.9457,78.1642
+Uttarakhand,Nainital,Nainital,263001,29.3919,79.4542
+West Bengal,Kolkata,Kolkata,700001,22.5726,88.3639
+West Bengal,Howrah,Howrah,711101,22.5958,88.2636
+West Bengal,Durgapur,Paschim Bardhaman,713201,23.5204,87.3119
+West Bengal,Siliguri,Darjeeling,734001,26.7271,88.3953
+Andaman and Nicobar Islands,Port Blair,South Andaman,744101,11.6234,92.7265
+Chandigarh,Chandigarh,Chandigarh,160001,30.7333,76.7794
+Dadra and Nagar Haveli and Daman and Diu,Daman,Daman,396210,20.3974,72.8328
+Delhi,New Delhi,New Delhi,110001,28.6139,77.2090
+Jammu and Kashmir,Srinagar,Srinagar,190001,34.0837,74.7973
+Jammu and Kashmir,Jammu,Jammu,180001,32.7266,74.8570
+Ladakh,Leh,Leh,194101,34.1526,77.5771
+Lakshadweep,Kavaratti,Lakshadweep,682555,10.5667,72.6417
+Puducherry,Puducherry,Puducherry,605001,11.9416,79.8083
+

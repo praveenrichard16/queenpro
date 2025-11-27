@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+		<title><?php echo $__env->yieldContent('title', 'WowDash Admin'); ?></title>
+		<?php
+			$favicon = !empty($appSettings['site_favicon'])
+				? asset('storage/'.$appSettings['site_favicon'])
+				: asset('wowdash/assets/images/favicon.png');
+			$siteLogoLight = !empty($appSettings['site_logo'])
+				? asset('storage/'.$appSettings['site_logo'])
+				: asset('wowdash/assets/images/logo.png');
+			$siteLogoDark = !empty($appSettings['site_logo_dark'])
+				? asset('storage/'.$appSettings['site_logo_dark'])
+				: $siteLogoLight;
+
+			// Always display the dark logo throughout the admin dashboard when provided.
+			if (!empty($appSettings['site_logo_dark'])) {
+				$siteLogoLight = $siteLogoDark;
+			}
+
+			$siteLogoIcon = $siteLogoDark;
+			$adminUser = auth()->user();
+		?>
+		<link rel="icon" type="image/png" href="<?php echo e($favicon); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/remixicon.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/lib/bootstrap.min.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/lib/apexcharts.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/lib/dataTables.min.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/lib/editor-katex.min.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/lib/editor.atom-one-dark.min.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/lib/editor.quill.snow.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/lib/flatpickr.min.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/lib/full-calendar.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/lib/jquery-jvectormap-2.0.5.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/lib/magnific-popup.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/lib/slick.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/lib/prism.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/lib/file-upload.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/lib/audioplayer.css')); ?>">
+		<link rel="stylesheet" href="<?php echo e(asset('wowdash/assets/css/style.css')); ?>">
+	<style>
+			.sidebar-menu > li.active > a,
+			.sidebar-menu > li > a:hover {
+				background-color: #024550 !important;
+				color: #ffffff !important;
+			}
+			.sidebar-menu > li > a:hover .menu-icon,
+			.sidebar-menu > li.active > a .menu-icon {
+				color: #ffffff !important;
+			}
+			.btn-primary,
+			.btn-warning,
+			.btn-success,
+			.btn-danger,
+			.btn-info,
+			.btn-outline-primary,
+			.btn-outline-secondary,
+			.btn-outline-success,
+			.btn-outline-danger,
+			.btn-outline-warning,
+			.btn-outline-info,
+			.btn.btn-link.text-decoration-none,
+			.btn,
+			button[type="submit"],
+			input[type="submit"] {
+				background-color: #024550 !important;
+				border-color: #024550 !important;
+				color: #ffffff !important;
+			}
+
+			.btn:hover,
+			.btn:focus,
+			.btn:active {
+				background-color: #03606a !important;
+				border-color: #03606a !important;
+				color: #ffffff !important;
+			}
+
+			.btn-outline-secondary,
+			.btn-outline-secondary:hover,
+			.btn-outline-secondary:focus {
+				background-color: transparent !important;
+				color: #024550 !important;
+				border-color: #024550 !important;
+			}
+
+			.btn-outline-secondary:hover,
+			.btn-outline-secondary:focus {
+				background-color: rgba(2, 69, 80, 0.08) !important;
+			}
+			.navbar-header .dropdown-toggle::after {
+				display: none !important;
+			}
+			.navbar-header .dropdown-toggle iconify-icon {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				margin-left: 8px;
+				color: #6e6d79;
+			}
+			.sidebar-menu .submenu-toggle {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 0.75rem;
+			}
+			.sidebar-menu .submenu-arrow {
+				transition: transform 0.2s ease;
+				color: #6e6d79;
+			}
+			.sidebar-menu .submenu-arrow.rotate-180 {
+				transform: rotate(180deg);
+			}
+			.sidebar-menu .sidebar-submenu {
+				list-style: none;
+				padding-left: 2.75rem;
+				margin: 0.75rem 0 0;
+				display: grid;
+				gap: 0.35rem;
+			}
+			.sidebar-menu .sidebar-submenu li a {
+				display: flex;
+				align-items: center;
+				gap: 0.6rem;
+				padding: 0.5rem 0.75rem;
+				border-radius: 0.75rem;
+				color: #6e6d79;
+				font-size: 0.95rem;
+				transition: background-color 0.2s ease, color 0.2s ease;
+			}
+			.sidebar-menu .sidebar-submenu li a:hover,
+			.sidebar-menu .sidebar-submenu li a.active {
+				color: #024550 !important;
+				background-color: rgba(2, 69, 80, 0.08);
+			}
+	</style>
+		<?php echo $__env->yieldPushContent('styles'); ?>
+</head>
+
+<body>
+		<div class="preloader" id="preloader">
+			<div class="loader-book">
+				<div class="loader-book-page"></div>
+				<div class="loader-book-page"></div>
+				<div class="loader-book-page"></div>
+			</div>
+		</div>
+
+		<aside class="sidebar">
+			<button type="button" class="sidebar-close-btn">
+				<iconify-icon icon="radix-icons:cross-2"></iconify-icon>
+			</button>
+			<div class="mb-24">
+				<a href="<?php echo e(route('admin.dashboard')); ?>" class="sidebar-logo">
+					<img src="<?php echo e($siteLogoLight); ?>" alt="logo" class="light-logo" style="width:240px;height:140px;object-fit:contain;">
+					<img src="<?php echo e($siteLogoDark); ?>" alt="logo" class="dark-logo" style="width:240px;height:140px;object-fit:contain;">
+					<img src="<?php echo e($siteLogoIcon); ?>" alt="logo" class="logo-icon">
+				</a>
+			</div>
+			<div class="sidebar-menu-area">
+				<ul class="sidebar-menu" id="sidebar-menu">
+					<?php
+						$blogMenuActive = request()->routeIs('admin.blog.posts.*') || request()->routeIs('admin.blog.categories.*') || request()->routeIs('admin.blog.tags.*');
+						$catalogMenuActive = request()->routeIs('admin.products.*') || request()->routeIs('admin.categories.*') || request()->routeIs('admin.tags.*') || request()->routeIs('admin.brands.*') || request()->routeIs('admin.attributes.*');
+						$homeMenuActive = request()->routeIs('admin.cms.home.index')
+							|| request()->routeIs('admin.cms.home.sliders.*')
+							|| request()->routeIs('admin.cms.home.second-slider.*')
+							|| request()->routeIs('admin.cms.home.product-slides.*')
+							|| request()->routeIs('admin.cms.home.seo.*');
+						$cmsMenuActive = $homeMenuActive
+							|| request()->routeIs('admin.cms.header.toolbar.*')
+							|| request()->routeIs('admin.cms.legal-pages.*')
+							|| request()->routeIs('admin.cms.about-us.*')
+							|| request()->routeIs('admin.cms.breadcrumb.*');
+					$supportMenuActive = request()->routeIs('admin.support.*');
+					$settingsMenuActive = request()->routeIs('admin.settings.*') || request()->routeIs('admin.integrations.*') || request()->routeIs('admin.tax-classes.*') || request()->routeIs('admin.shipping-methods.*') || request()->routeIs('admin.documentation.*');
+					$affiliateMenuActive = request()->routeIs('admin.affiliates.*');
+					$notificationMenuActive = request()->routeIs('notifications.*');
+					$customerMenuActive = request()->routeIs('admin.customers.*');
+					$marketingMenuActive = request()->routeIs('admin.marketing.*');
+					$offerMenuActive = request()->routeIs('admin.offers.*');
+					$invoiceMenuActive = request()->routeIs('admin.invoices.*');
+					$leadMenuActive = request()->routeIs('admin.leads.*') || request()->routeIs('admin.lead-sources.*') || request()->routeIs('admin.lead-stages.*');
+					$quotationMenuActive = request()->routeIs('admin.quotations.*');
+					$enquiryMenuActive = request()->routeIs('admin.enquiries.*');
+					$usersMenuActive = request()->routeIs('admin.users.*');
+					$documentationMenuActive = request()->routeIs('admin.documentation.*');
+					?>
+					<li class="<?php echo e(request()->routeIs('admin.dashboard') ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.dashboard')); ?>">
+							<iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+							<span>Dashboard</span>
+						</a>
+					</li>
+					<li class="<?php echo e($catalogMenuActive ? 'active' : ''); ?>">
+						<a href="javascript:void(0)"
+						   class="submenu-toggle d-flex align-items-center justify-content-between gap-3"
+						   data-submenu="catalog"
+						   data-bs-toggle="collapse"
+						   data-bs-target="#sidebarCatalogMenu"
+						   aria-expanded="<?php echo e($catalogMenuActive ? 'true' : 'false'); ?>"
+						   aria-controls="sidebarCatalogMenu">
+							<span class="d-inline-flex align-items-center gap-3">
+								<iconify-icon icon="mdi:store-outline" class="menu-icon"></iconify-icon>
+								<span>Catalog</span>
+							</span>
+							<iconify-icon icon="solar:alt-arrow-down-outline" class="submenu-arrow <?php echo e($catalogMenuActive ? 'rotate-180' : ''); ?>"></iconify-icon>
+						</a>
+						<ul class="sidebar-submenu collapse <?php echo e($catalogMenuActive ? 'show' : ''); ?>" id="sidebarCatalogMenu">
+							<li>
+								<a href="<?php echo e(route('admin.products.index')); ?>" class="<?php echo e(request()->routeIs('admin.products.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:bag-smile-outline" class="text-primary-main"></iconify-icon>
+									Products
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.categories.index')); ?>" class="<?php echo e(request()->routeIs('admin.categories.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:menu-dots-vertical-linear" class="text-info-main"></iconify-icon>
+									Product Categories
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.tags.index')); ?>" class="<?php echo e(request()->routeIs('admin.tags.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:hashtag-linear" class="text-warning"></iconify-icon>
+									Product Tags
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.brands.index')); ?>" class="<?php echo e(request()->routeIs('admin.brands.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:medal-ribbons-star-linear" class="text-success"></iconify-icon>
+									Brands
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.attributes.index')); ?>" class="<?php echo e(request()->routeIs('admin.attributes.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:settings-linear" class="text-purple"></iconify-icon>
+									Attributes
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="<?php echo e($cmsMenuActive ? 'active' : ''); ?>">
+						<a href="javascript:void(0)"
+						   class="submenu-toggle d-flex align-items-center justify-content-between gap-3"
+						   data-submenu="cms"
+						   data-bs-toggle="collapse"
+						   data-bs-target="#sidebarCmsMenu"
+						   aria-expanded="<?php echo e($cmsMenuActive ? 'true' : 'false'); ?>"
+						   aria-controls="sidebarCmsMenu">
+							<span class="d-inline-flex align-items-center gap-3">
+								<iconify-icon icon="solar:document-add-linear" class="menu-icon"></iconify-icon>
+								<span>CMS</span>
+							</span>
+							<iconify-icon icon="solar:alt-arrow-down-outline" class="submenu-arrow <?php echo e($cmsMenuActive ? 'rotate-180' : ''); ?>"></iconify-icon>
+						</a>
+						<ul class="sidebar-submenu collapse <?php echo e($cmsMenuActive ? 'show' : ''); ?>" id="sidebarCmsMenu">
+							<li>
+								<a href="<?php echo e(route('admin.cms.home.index')); ?>" class="<?php echo e($homeMenuActive ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:home-smile-angle-outline" class="text-primary-main"></iconify-icon>
+									Home
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.cms.header.toolbar.index')); ?>" class="<?php echo e(request()->routeIs('admin.cms.header.toolbar.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:menu-dots-square-outline" class="text-info-main"></iconify-icon>
+									Header
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.cms.legal-pages.index')); ?>" class="<?php echo e(request()->routeIs('admin.cms.legal-pages.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:document-text-linear" class="text-warning"></iconify-icon>
+									Legal Pages
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.cms.about-us.edit')); ?>" class="<?php echo e(request()->routeIs('admin.cms.about-us.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:info-circle-linear" class="text-purple"></iconify-icon>
+									About Us
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.cms.breadcrumb.settings')); ?>" class="<?php echo e(request()->routeIs('admin.cms.breadcrumb.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:layers-linear" class="text-success"></iconify-icon>
+									Breadcrumb
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="<?php echo e($usersMenuActive ? 'active' : ''); ?>">
+						<a href="javascript:void(0)"
+						   class="submenu-toggle d-flex align-items-center justify-content-between gap-3"
+						   data-submenu="users"
+						   data-bs-toggle="collapse"
+						   data-bs-target="#sidebarUsersMenu"
+						   aria-expanded="<?php echo e($usersMenuActive ? 'true' : 'false'); ?>"
+						   aria-controls="sidebarUsersMenu">
+							<span class="d-inline-flex align-items-center gap-3">
+								<iconify-icon icon="solar:user-id-linear" class="menu-icon"></iconify-icon>
+								<span>Users</span>
+							</span>
+							<iconify-icon icon="solar:alt-arrow-down-outline" class="submenu-arrow <?php echo e($usersMenuActive ? 'rotate-180' : ''); ?>"></iconify-icon>
+						</a>
+						<ul class="sidebar-submenu collapse <?php echo e($usersMenuActive ? 'show' : ''); ?>" id="sidebarUsersMenu">
+							<li>
+								<a href="<?php echo e(route('admin.users.index')); ?>" class="<?php echo e(request()->routeIs('admin.users.index') || request()->routeIs('admin.users.create') || request()->routeIs('admin.users.edit') || request()->routeIs('admin.users.*-activity') || request()->routeIs('admin.users.customer-details') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:users-group-two-rounded-outline" class="text-primary-main"></iconify-icon>
+									Manage Users
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.users.assign-modules')); ?>" class="<?php echo e(request()->routeIs('admin.users.assign-modules') || request()->routeIs('admin.users.update-modules') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:settings-linear" class="text-info-main"></iconify-icon>
+									Assign Modules to Staff
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="<?php echo e($blogMenuActive ? 'active' : ''); ?>">
+						<a href="javascript:void(0)"
+						   class="submenu-toggle"
+						   data-submenu="blog"
+						   data-bs-toggle="collapse"
+						   data-bs-target="#sidebarBlogMenu"
+						   aria-expanded="<?php echo e($blogMenuActive ? 'true' : 'false'); ?>"
+						   aria-controls="sidebarBlogMenu">
+							<span class="d-inline-flex align-items-center gap-3">
+								<iconify-icon icon="solar:document-text-outline" class="menu-icon"></iconify-icon>
+								<span>Blogs</span>
+							</span>
+							<iconify-icon icon="solar:alt-arrow-down-outline" class="submenu-arrow <?php echo e($blogMenuActive ? 'rotate-180' : ''); ?>"></iconify-icon>
+						</a>
+						<ul class="sidebar-submenu collapse <?php echo e($blogMenuActive ? 'show' : ''); ?>" id="sidebarBlogMenu">
+							<li>
+								<a href="<?php echo e(route('admin.blog.posts.index')); ?>" class="<?php echo e(request()->routeIs('admin.blog.posts.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:document-add-outline" class="text-primary-main"></iconify-icon>
+									All Posts
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.blog.categories.index')); ?>" class="<?php echo e(request()->routeIs('admin.blog.categories.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:folders-outline" class="text-info-main"></iconify-icon>
+									Categories
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.blog.tags.index')); ?>" class="<?php echo e(request()->routeIs('admin.blog.tags.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:hashtag-circle-outline" class="text-warning"></iconify-icon>
+									Tags
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="<?php echo e(request()->routeIs('admin.orders.*') ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.orders.index')); ?>">
+							<iconify-icon icon="mdi:clipboard-text-outline" class="menu-icon"></iconify-icon>
+							<span>Orders</span>
+						</a>
+					</li>
+					<li class="<?php echo e($affiliateMenuActive ? 'active' : ''); ?>">
+						<a href="javascript:void(0)"
+						   class="submenu-toggle d-flex align-items-center justify-content-between gap-3"
+						   data-submenu="affiliates"
+						   data-bs-toggle="collapse"
+						   data-bs-target="#sidebarAffiliatesMenu"
+						   aria-expanded="<?php echo e($affiliateMenuActive ? 'true' : 'false'); ?>"
+						   aria-controls="sidebarAffiliatesMenu">
+							<span class="d-inline-flex align-items-center gap-3">
+								<iconify-icon icon="solar:hand-stars-outline" class="menu-icon"></iconify-icon>
+								<span>Affiliates</span>
+							</span>
+							<iconify-icon icon="solar:alt-arrow-down-outline" class="submenu-arrow <?php echo e($affiliateMenuActive ? 'rotate-180' : ''); ?>"></iconify-icon>
+						</a>
+						<ul class="sidebar-submenu collapse <?php echo e($affiliateMenuActive ? 'show' : ''); ?>" id="sidebarAffiliatesMenu">
+							<li>
+								<a href="<?php echo e(route('admin.affiliates.index')); ?>" class="<?php echo e(request()->routeIs('admin.affiliates.index') || request()->routeIs('admin.affiliates.create') || request()->routeIs('admin.affiliates.edit') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:user-id-linear" class="text-primary-main"></iconify-icon>
+									Manage Affiliates
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.affiliates.commissions.index')); ?>" class="<?php echo e(request()->routeIs('admin.affiliates.commissions.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:dollar-minimalistic-linear" class="text-info-main"></iconify-icon>
+									Commissions
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.affiliates.payouts.index')); ?>" class="<?php echo e(request()->routeIs('admin.affiliates.payouts.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:wallet-money-outline" class="text-success"></iconify-icon>
+									Payouts
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="<?php echo e($supportMenuActive ? 'active' : ''); ?>">
+						<a href="javascript:void(0)"
+						   class="submenu-toggle d-flex align-items-center justify-content-between gap-3"
+						   data-submenu="support"
+						   data-bs-toggle="collapse"
+						   data-bs-target="#sidebarSupportMenu"
+						   aria-expanded="<?php echo e($supportMenuActive ? 'true' : 'false'); ?>"
+						   aria-controls="sidebarSupportMenu">
+							<span class="d-inline-flex align-items-center gap-3">
+								<iconify-icon icon="solar:chat-dots-outline" class="menu-icon"></iconify-icon>
+								<span>Support</span>
+							</span>
+							<iconify-icon icon="solar:alt-arrow-down-outline" class="submenu-arrow <?php echo e($supportMenuActive ? 'rotate-180' : ''); ?>"></iconify-icon>
+						</a>
+						<ul class="sidebar-submenu collapse <?php echo e($supportMenuActive ? 'show' : ''); ?>" id="sidebarSupportMenu">
+							<li>
+								<a href="<?php echo e(route('admin.support.tickets.index')); ?>" class="<?php echo e(request()->routeIs('admin.support.tickets.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:chat-dots-outline" class="text-primary-main"></iconify-icon>
+									Tickets
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.support.categories.index')); ?>" class="<?php echo e(request()->routeIs('admin.support.categories.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:folder-outline" class="text-info-main"></iconify-icon>
+									Categories
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.support.settings.edit')); ?>" class="<?php echo e(request()->routeIs('admin.support.settings.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:settings-linear" class="text-warning"></iconify-icon>
+									Settings
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="<?php echo e($customerMenuActive ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.customers.index')); ?>">
+							<iconify-icon icon="solar:users-group-two-rounded-outline" class="menu-icon"></iconify-icon>
+							<span>Customers</span>
+						</a>
+					</li>
+					<li class="<?php echo e(request()->routeIs('admin.reviews.*') ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.reviews.index')); ?>">
+							<iconify-icon icon="solar:star-outline" class="menu-icon"></iconify-icon>
+							<span>Reviews</span>
+						</a>
+					</li>
+					<li class="<?php echo e(request()->routeIs('admin.comments.*') ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.comments.index')); ?>">
+							<iconify-icon icon="solar:chat-round-outline" class="menu-icon"></iconify-icon>
+							<span>Comments</span>
+						</a>
+					</li>
+					<li class="<?php echo e($marketingMenuActive ? 'active' : ''); ?>">
+						<a href="javascript:void(0)"
+						   class="submenu-toggle d-flex align-items-center justify-content-between gap-3"
+						   data-submenu="marketing"
+						   data-bs-toggle="collapse"
+						   data-bs-target="#sidebarMarketingMenu"
+						   aria-expanded="<?php echo e($marketingMenuActive ? 'true' : 'false'); ?>"
+						   aria-controls="sidebarMarketingMenu">
+							<span class="d-inline-flex align-items-center gap-3">
+								<iconify-icon icon="solar:megaphone-outline" class="menu-icon"></iconify-icon>
+								<span>Marketing</span>
+							</span>
+							<iconify-icon icon="solar:alt-arrow-down-outline" class="submenu-arrow <?php echo e($marketingMenuActive ? 'rotate-180' : ''); ?>"></iconify-icon>
+						</a>
+						<ul class="sidebar-submenu collapse <?php echo e($marketingMenuActive ? 'show' : ''); ?>" id="sidebarMarketingMenu">
+							<li>
+								<a href="<?php echo e(route('admin.marketing.templates.index')); ?>" class="<?php echo e(request()->routeIs('admin.marketing.templates.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:document-text-outline" class="text-primary-main"></iconify-icon>
+									Templates
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.marketing.campaigns.index')); ?>" class="<?php echo e(request()->routeIs('admin.marketing.campaigns.*') && !request()->routeIs('admin.marketing.drip-campaigns.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:chart-outline" class="text-info-main"></iconify-icon>
+									Campaigns
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.marketing.drip-campaigns.index')); ?>" class="<?php echo e(request()->routeIs('admin.marketing.drip-campaigns.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:water-drop-outline" class="text-success"></iconify-icon>
+									Drip Campaigns
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="sidebar-menu-title mt-3">Sales</li>
+					<li class="<?php echo e($leadMenuActive ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.leads.index')); ?>">
+							<iconify-icon icon="solar:user-check-linear" class="menu-icon"></iconify-icon>
+							<span>Lead Management</span>
+						</a>
+					</li>
+					<li class="<?php echo e(request()->routeIs('admin.lead-sources.*') ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.lead-sources.index')); ?>">
+							<iconify-icon icon="solar:link-circle-outline" class="menu-icon"></iconify-icon>
+							<span>Lead Source</span>
+						</a>
+					</li>
+					<li class="<?php echo e(request()->routeIs('admin.lead-stages.*') ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.lead-stages.index')); ?>">
+							<iconify-icon icon="solar:layers-outline" class="menu-icon"></iconify-icon>
+							<span>Lead Stage</span>
+						</a>
+					</li>
+					<li class="<?php echo e($quotationMenuActive ? 'active' : ''); ?>">
+						<a href="javascript:void(0)"
+						   class="submenu-toggle d-flex align-items-center justify-content-between gap-3"
+						   data-submenu="quotations"
+						   data-bs-toggle="collapse"
+						   data-bs-target="#sidebarQuotationsMenu"
+						   aria-expanded="<?php echo e($quotationMenuActive ? 'true' : 'false'); ?>"
+						   aria-controls="sidebarQuotationsMenu">
+							<span class="d-inline-flex align-items-center gap-3">
+								<iconify-icon icon="solar:document-text-linear" class="menu-icon"></iconify-icon>
+								<span>Quotations</span>
+							</span>
+							<iconify-icon icon="solar:alt-arrow-down-outline" class="submenu-arrow <?php echo e($quotationMenuActive ? 'rotate-180' : ''); ?>"></iconify-icon>
+						</a>
+						<ul class="sidebar-submenu collapse <?php echo e($quotationMenuActive ? 'show' : ''); ?>" id="sidebarQuotationsMenu">
+							<li>
+								<a href="<?php echo e(route('admin.quotations.create')); ?>" class="<?php echo e(request()->routeIs('admin.quotations.create') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:add-circle-linear" class="text-primary-main"></iconify-icon>
+									Add Quotation
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.quotations.index')); ?>" class="<?php echo e(request()->routeIs('admin.quotations.index') || request()->routeIs('admin.quotations.edit') || request()->routeIs('admin.quotations.show') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:list-check-outline" class="text-info-main"></iconify-icon>
+									Manage Quotations
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="<?php echo e($enquiryMenuActive ? 'active' : ''); ?>">
+						<a href="javascript:void(0)"
+						   class="submenu-toggle d-flex align-items-center justify-content-between gap-3"
+						   data-submenu="enquiries"
+						   data-bs-toggle="collapse"
+						   data-bs-target="#sidebarEnquiriesMenu"
+						   aria-expanded="<?php echo e($enquiryMenuActive ? 'true' : 'false'); ?>"
+						   aria-controls="sidebarEnquiriesMenu">
+							<span class="d-inline-flex align-items-center gap-3">
+								<iconify-icon icon="solar:question-circle-outline" class="menu-icon"></iconify-icon>
+								<span>Enquiries</span>
+							</span>
+							<iconify-icon icon="solar:alt-arrow-down-outline" class="submenu-arrow <?php echo e($enquiryMenuActive ? 'rotate-180' : ''); ?>"></iconify-icon>
+						</a>
+						<ul class="sidebar-submenu collapse <?php echo e($enquiryMenuActive ? 'show' : ''); ?>" id="sidebarEnquiriesMenu">
+							<li>
+								<a href="<?php echo e(route('admin.enquiries.index')); ?>" class="<?php echo e(request()->routeIs('admin.enquiries.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:list-check-outline" class="text-info-main"></iconify-icon>
+									Manage Enquiries
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="<?php echo e(request()->routeIs('admin.marketing.campaigns.*') ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.marketing.campaigns.index')); ?>">
+							<iconify-icon icon="solar:megaphone-outline" class="menu-icon"></iconify-icon>
+							<span>Drip Campaigns</span>
+						</a>
+					</li>
+					<li class="<?php echo e($offerMenuActive ? 'active' : ''); ?>">
+						<a href="javascript:void(0)"
+						   class="submenu-toggle d-flex align-items-center justify-content-between gap-3"
+						   data-submenu="offers"
+						   data-bs-toggle="collapse"
+						   data-bs-target="#sidebarOfferMenu"
+						   aria-expanded="<?php echo e($offerMenuActive ? 'true' : 'false'); ?>"
+						   aria-controls="sidebarOfferMenu">
+							<span class="d-inline-flex align-items-center gap-3">
+								<iconify-icon icon="solar:gift-outline" class="menu-icon"></iconify-icon>
+								<span>Offers</span>
+							</span>
+							<iconify-icon icon="solar:alt-arrow-down-outline" class="submenu-arrow <?php echo e($offerMenuActive ? 'rotate-180' : ''); ?>"></iconify-icon>
+						</a>
+						<ul class="sidebar-submenu collapse <?php echo e($offerMenuActive ? 'show' : ''); ?>" id="sidebarOfferMenu">
+							<li>
+								<a href="<?php echo e(route('admin.offers.create')); ?>" class="<?php echo e(request()->routeIs('admin.offers.create') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:add-circle-linear" class="text-primary-main"></iconify-icon>
+									Create Offer
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.offers.index')); ?>" class="<?php echo e(request()->routeIs('admin.offers.index') || request()->routeIs('admin.offers.edit') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:list-check-outline" class="text-info-main"></iconify-icon>
+									Manage Offers
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="<?php echo e($invoiceMenuActive ? 'active' : ''); ?>">
+						<a href="javascript:void(0)"
+						   class="submenu-toggle d-flex align-items-center justify-content-between gap-3"
+						   data-submenu="invoices"
+						   data-bs-toggle="collapse"
+						   data-bs-target="#sidebarInvoiceMenu"
+						   aria-expanded="<?php echo e($invoiceMenuActive ? 'true' : 'false'); ?>"
+						   aria-controls="sidebarInvoiceMenu">
+							<span class="d-inline-flex align-items-center gap-3">
+								<iconify-icon icon="solar:receipt-outline" class="menu-icon"></iconify-icon>
+								<span>Invoices</span>
+							</span>
+							<iconify-icon icon="solar:alt-arrow-down-outline" class="submenu-arrow <?php echo e($invoiceMenuActive ? 'rotate-180' : ''); ?>"></iconify-icon>
+						</a>
+						<ul class="sidebar-submenu collapse <?php echo e($invoiceMenuActive ? 'show' : ''); ?>" id="sidebarInvoiceMenu">
+							<li>
+								<a href="<?php echo e(route('admin.invoices.templates.index')); ?>" class="<?php echo e(request()->routeIs('admin.invoices.templates.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:document-text-outline" class="text-primary-main"></iconify-icon>
+									Invoice Template
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.invoices.invoices.index')); ?>" class="<?php echo e(request()->routeIs('admin.invoices.invoices.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:receipt-check-outline" class="text-info-main"></iconify-icon>
+									Manage Invoices
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="<?php echo e($notificationMenuActive ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('notifications.index')); ?>">
+							<iconify-icon icon="solar:bell-outline" class="menu-icon"></iconify-icon>
+							<span>Notifications</span>
+							<?php
+								$unreadCount = auth()->user()->unreadNotifications()->count();
+							?>
+							<?php if($unreadCount > 0): ?>
+								<span class="badge bg-danger ms-2"><?php echo e($unreadCount > 99 ? '99+' : $unreadCount); ?></span>
+							<?php endif; ?>
+						</a>
+					</li>
+					<li class="<?php echo e($settingsMenuActive ? 'active' : ''); ?>">
+						<a href="javascript:void(0)"
+						   class="submenu-toggle d-flex align-items-center justify-content-between gap-3"
+						   data-submenu="settings"
+						   data-bs-toggle="collapse"
+						   data-bs-target="#sidebarSettingsMenu"
+						   aria-expanded="<?php echo e($settingsMenuActive ? 'true' : 'false'); ?>"
+						   aria-controls="sidebarSettingsMenu">
+							<span class="d-inline-flex align-items-center gap-3">
+								<iconify-icon icon="solar:settings-linear" class="menu-icon"></iconify-icon>
+								<span>Settings</span>
+							</span>
+							<iconify-icon icon="solar:alt-arrow-down-outline" class="submenu-arrow <?php echo e($settingsMenuActive ? 'rotate-180' : ''); ?>"></iconify-icon>
+						</a>
+						<ul class="sidebar-submenu collapse <?php echo e($settingsMenuActive ? 'show' : ''); ?>" id="sidebarSettingsMenu">
+							<li>
+								<a href="<?php echo e(route('admin.settings.general')); ?>" class="<?php echo e(request()->routeIs('admin.settings.general') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:widget-4-outline" class="text-primary-main"></iconify-icon>
+									General
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.settings.seo')); ?>" class="<?php echo e(request()->routeIs('admin.settings.seo*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:shield-check-outline" class="text-info-main"></iconify-icon>
+									SEO Tools
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.integrations.index')); ?>" class="<?php echo e(request()->routeIs('admin.integrations.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:usb-outline" class="text-warning"></iconify-icon>
+									Integrations
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.tax-classes.index')); ?>" class="<?php echo e(request()->routeIs('admin.tax-classes.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:receipt-outline" class="text-danger"></iconify-icon>
+									Tax Classes
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.shipping-methods.index')); ?>" class="<?php echo e(request()->routeIs('admin.shipping-methods.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:delivery-outline" class="text-success"></iconify-icon>
+									Shipping Methods
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.settings.locations.index')); ?>" class="<?php echo e(request()->routeIs('admin.settings.locations.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:map-point-outline" class="text-primary"></iconify-icon>
+									Location Manager
+								</a>
+							</li>
+							<li>
+								<a href="<?php echo e(route('admin.documentation.index')); ?>" class="<?php echo e(request()->routeIs('admin.documentation.*') ? 'active' : ''); ?>">
+									<iconify-icon icon="solar:document-text-outline" class="text-info"></iconify-icon>
+									Documentation
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="sidebar-menu-title mt-3">API Access</li>
+					<li class="<?php echo e(request()->routeIs('admin.api.documentation') || request()->routeIs('admin.api.docs') ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.api.documentation')); ?>">
+							<iconify-icon icon="solar:document-linear" class="menu-icon"></iconify-icon>
+							<span>Documentation</span>
+						</a>
+					</li>
+					<li class="<?php echo e(request()->routeIs('admin.api-tokens.*') ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.api-tokens.index')); ?>">
+							<iconify-icon icon="solar:key-outline" class="menu-icon"></iconify-icon>
+							<span>Manage Tokens</span>
+						</a>
+					</li>
+					<li class="<?php echo e(request()->routeIs('admin.api.webhooks.*') && !request()->routeIs('admin.api.webhook-logs.*') ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.api.webhooks.index')); ?>">
+							<iconify-icon icon="solar:webhook-outline" class="menu-icon"></iconify-icon>
+							<span>Webhooks</span>
+						</a>
+					</li>
+					<li class="<?php echo e(request()->routeIs('admin.api.webhook-logs.*') ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.api.webhook-logs.index')); ?>">
+							<iconify-icon icon="solar:file-text-outline" class="menu-icon"></iconify-icon>
+							<span>Webhook Logs</span>
+						</a>
+					</li>
+					<li class="<?php echo e(request()->routeIs('admin.api.test-console') ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.api.test-console')); ?>">
+							<iconify-icon icon="solar:code-square-outline" class="menu-icon"></iconify-icon>
+							<span>Test API</span>
+						</a>
+					</li>
+					<li class="<?php echo e(request()->routeIs('admin.api.usage-statistics') ? 'active' : ''); ?>">
+						<a href="<?php echo e(route('admin.api.usage-statistics')); ?>">
+							<iconify-icon icon="solar:chart-2-outline" class="menu-icon"></iconify-icon>
+							<span>Usage Statistics</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="sidebar-profile">
+				<div class="sidebar-profile-top">
+					<div class="profile-thumb">
+						<?php if($adminUser): ?>
+							<?php if (isset($component)) { $__componentOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.avatar','data' => ['user' => $adminUser,'size' => 'md','class' => 'w-100 h-100']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('avatar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['user' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($adminUser),'size' => 'md','class' => 'w-100 h-100']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b)): ?>
+<?php $attributes = $__attributesOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b; ?>
+<?php unset($__attributesOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b)): ?>
+<?php $component = $__componentOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b; ?>
+<?php unset($__componentOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b); ?>
+<?php endif; ?>
+						<?php else: ?>
+							<img src="<?php echo e(asset('wowdash/assets/images/avatar/avatar-1.png')); ?>" alt="profile">
+						<?php endif; ?>
+					</div>
+					<h6 class="name mb-0"><?php echo e($adminUser?->name ?? 'Admin'); ?></h6>
+					<span class="designation">Administrator</span>
+				</div>
+				<a href="<?php echo e(route('logout')); ?>" class="sidebar-logout" onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">
+					<iconify-icon icon="solar:logout-2-outline"></iconify-icon>
+					<span>Logout</span>
+				</a>
+				<form id="admin-logout-form" action="<?php echo e(route('logout')); ?>" method="POST" class="d-none">
+					<?php echo csrf_field(); ?>
+				</form>
+			</div>
+		</aside>
+
+		<main class="dashboard-main">
+			<div class="navbar-header">
+				<div class="row align-items-center justify-content-between g-0">
+					<div class="col-auto">
+						<div class="d-flex flex-wrap align-items-center gap-3">
+							<button type="button" class="sidebar-toggle">
+								<iconify-icon icon="heroicons:bars-3-solid" class="icon text-2xl non-active"></iconify-icon>
+								<iconify-icon icon="iconoir:arrow-right" class="icon text-2xl active"></iconify-icon>
+							</button>
+							<button type="button" class="sidebar-mobile-toggle">
+								<iconify-icon icon="heroicons:bars-3-solid" class="icon"></iconify-icon>
+							</button>
+							<form class="navbar-search d-none d-md-flex">
+								<input type="text" name="search" placeholder="Search">
+								<iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
+							</form>
+						</div>
+					</div>
+					<div class="col-auto">
+						<div class="d-flex flex-wrap align-items-center gap-3">
+							<button class="w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center" type="button" data-theme-toggle></button>
+						<div class="dropdown">
+							<button class="has-indicator w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center position-relative" type="button" data-bs-toggle="dropdown" id="notificationDropdown">
+								<iconify-icon icon="solar:bell-outline" class="text-primary-light text-xl"></iconify-icon>
+								<span class="notification-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="notificationBadge" style="font-size: 0.65rem;">0</span>
+							</button>
+							<div class="dropdown-menu to-top dropdown-menu-lg p-0" id="notificationMenu">
+								<div class="m-16 py-12 px-16 radius-8 bg-primary-50 mb-16 d-flex align-items-center justify-content-between gap-2">
+									<div>
+										<h6 class="text-lg text-primary-light fw-semibold mb-0">Notifications</h6>
+									</div>
+									<span class="text-primary-600 fw-semibold text-lg w-40-px h-40-px rounded-circle bg-base d-flex justify-content-center align-items-center" id="notificationCount">0</span>
+								</div>
+								<div class="max-h-400-px overflow-y-auto scroll-sm pe-4" id="notificationList">
+									<div class="text-center py-32 text-secondary-light">
+										<iconify-icon icon="solar:bell-off-outline" class="text-3xl mb-2"></iconify-icon>
+										<p class="mb-0">No notifications</p>
+									</div>
+								</div>
+								<div class="d-flex border-top">
+									<a href="<?php echo e(route('notifications.index')); ?>" class="flex-grow-1 text-center py-12 text-primary-600 fw-semibold">View all</a>
+									<a href="#" class="flex-grow-1 text-center py-12 text-primary-600 fw-semibold border-start" id="markAllReadBtn">Mark all read</a>
+								</div>
+							</div>
+						</div>
+						<div class="dropdown">
+							<button class="btn btn-link text-decoration-none p-0 dropdown-toggle" type="button" data-bs-toggle="dropdown" style="box-shadow:none;background:none;border:0;">
+								<?php if($adminUser): ?>
+									<?php if (isset($component)) { $__componentOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.avatar','data' => ['user' => $adminUser,'size' => 'md','class' => 'w-40-px h-40-px']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('avatar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['user' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($adminUser),'size' => 'md','class' => 'w-40-px h-40-px']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b)): ?>
+<?php $attributes = $__attributesOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b; ?>
+<?php unset($__attributesOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b)): ?>
+<?php $component = $__componentOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b; ?>
+<?php unset($__componentOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b); ?>
+<?php endif; ?>
+								<?php else: ?>
+									<img src="<?php echo e(asset('wowdash/assets/images/avatar/avatar-1.png')); ?>" alt="avatar" class="w-40-px h-40-px rounded-circle object-fit-cover">
+								<?php endif; ?>
+							</button>
+							<div class="dropdown-menu dropdown-menu-end profile-dropdown shadow border-0 radius-12 p-0 overflow-hidden">
+								<div class="p-24 bg-neutral-100">
+									<div class="d-flex align-items-center gap-3">
+										<?php if($adminUser): ?>
+											<?php if (isset($component)) { $__componentOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.avatar','data' => ['user' => $adminUser,'size' => 'lg','class' => 'w-56-px h-56-px']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('avatar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['user' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($adminUser),'size' => 'lg','class' => 'w-56-px h-56-px']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b)): ?>
+<?php $attributes = $__attributesOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b; ?>
+<?php unset($__attributesOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b)): ?>
+<?php $component = $__componentOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b; ?>
+<?php unset($__componentOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b); ?>
+<?php endif; ?>
+										<?php else: ?>
+											<img src="<?php echo e(asset('wowdash/assets/images/avatar/avatar-1.png')); ?>" alt="avatar" class="w-56-px h-56-px rounded-circle object-fit-cover">
+										<?php endif; ?>
+										<div>
+											<h6 class="mb-0 text-md fw-semibold"><?php echo e($adminUser?->name ?? 'Admin'); ?></h6>
+											<span class="text-sm text-secondary-light"><?php echo e($adminUser?->email ?? 'admin@example.com'); ?></span>
+										</div>
+									</div>
+								</div>
+								<div class="list-group list-group-flush">
+									<a href="<?php echo e(route('admin.profile')); ?>" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
+										<iconify-icon icon="solar:user-circle-outline" class="text-lg"></iconify-icon>
+										View Profile
+									</a>
+									<a href="<?php echo e(route('admin.settings.general')); ?>" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
+										<iconify-icon icon="solar:settings-outline" class="text-lg"></iconify-icon>
+										Settings
+									</a>
+								</div>
+								<div class="border-top">
+									<a class="dropdown-item text-danger py-12 d-flex align-items-center gap-2" href="<?php echo e(route('logout')); ?>" onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">
+										<iconify-icon icon="solar:logout-2-outline" class="text-lg"></iconify-icon>
+										Logout
+									</a>
+								</div>
+							</div>
+						</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+				<?php echo $__env->yieldContent('content'); ?>
+
+			<footer class="footer mt-32">
+				<div class="container-fluid">
+					<div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+						<p class="mb-0">&copy; <?php echo e(date('Y')); ?> <?php echo e(config('app.name')); ?>. All rights reserved.</p>
+						<div class="d-flex gap-3">
+							<a href="#" class="text-secondary-light">Privacy Policy</a>
+							<a href="#" class="text-secondary-light">Terms</a>
+							<a href="#" class="text-secondary-light">Help</a>
+						</div>
+		</div>
+	</div>
+			</footer>
+		</main>
+
+		<script src="<?php echo e(asset('wowdash/assets/js/lib/jquery-3.7.1.min.js')); ?>"></script>
+		<script src="<?php echo e(asset('wowdash/assets/js/lib/bootstrap.bundle.min.js')); ?>"></script>
+		<script src="<?php echo e(asset('wowdash/assets/js/lib/apexcharts.min.js')); ?>"></script>
+		<script src="<?php echo e(asset('wowdash/assets/js/lib/dataTables.min.js')); ?>"></script>
+		<script src="<?php echo e(asset('wowdash/assets/js/lib/iconify-icon.min.js')); ?>"></script>
+		<script src="<?php echo e(asset('wowdash/assets/js/lib/jquery-ui.min.js')); ?>"></script>
+		<script src="<?php echo e(asset('wowdash/assets/js/lib/jquery-jvectormap-2.0.5.min.js')); ?>"></script>
+		<script src="<?php echo e(asset('wowdash/assets/js/lib/jquery-jvectormap-world-mill-en.js')); ?>"></script>
+		<script src="<?php echo e(asset('wowdash/assets/js/lib/magnifc-popup.min.js')); ?>"></script>
+		<script src="<?php echo e(asset('wowdash/assets/js/lib/slick.min.js')); ?>"></script>
+		<script src="<?php echo e(asset('wowdash/assets/js/lib/prism.js')); ?>"></script>
+		<script src="<?php echo e(asset('wowdash/assets/js/lib/file-upload.js')); ?>"></script>
+		<script src="<?php echo e(asset('wowdash/assets/js/lib/audioplayer.js')); ?>"></script>
+		<script src="<?php echo e(asset('wowdash/assets/js/app.js')); ?>"></script>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				if (typeof bootstrap === 'undefined') {
+					return;
+				}
+
+				const setupSubmenu = (toggle) => {
+					const menuId = toggle.getAttribute('data-bs-target')?.replace('#', '');
+					if (!menuId) {
+						return null;
+					}
+					const menu = document.getElementById(menuId);
+					if (!menu) {
+						return null;
+					}
+
+					const arrow = toggle.querySelector('.submenu-arrow');
+					const collapseInstance = bootstrap.Collapse.getOrCreateInstance(menu, { toggle: false });
+
+					const setExpanded = (expanded) => {
+						toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+						if (expanded) {
+							arrow?.classList.add('rotate-180');
+							toggle.classList.add('active');
+							menu.style.height = '';
+							menu.style.display = '';
+							menu.classList.add('show');
+						} else {
+							arrow?.classList.remove('rotate-180');
+							const stayActive = toggle.dataset.submenu === 'blog'
+								? <?php echo json_encode($blogMenuActive, 15, 512) ?>
+								: (toggle.dataset.submenu === 'catalog' ? <?php echo json_encode($catalogMenuActive, 15, 512) ?> : false);
+							if (!stayActive) {
+								toggle.classList.remove('active');
+							}
+							menu.classList.remove('show', 'collapsing');
+							menu.style.height = '';
+							menu.style.display = 'none';
+						}
+					};
+
+					if (menu.classList.contains('show')) {
+						setExpanded(true);
+					} else {
+						setExpanded(false);
+					}
+
+					const forceCollapse = () => {
+						try {
+							collapseInstance.hide();
+						} catch (e) {
+							/* ignore */
+						}
+						setExpanded(false);
+					};
+
+					menu.addEventListener('shown.bs.collapse', () => setExpanded(true));
+					menu.addEventListener('hidden.bs.collapse', () => setExpanded(false));
+
+					toggle.addEventListener('click', (event) => {
+						event.preventDefault();
+						const isExpanded = menu.classList.contains('show') || menu.style.display === '';
+						if (isExpanded) {
+							forceCollapse();
+						} else {
+							setExpanded(true);
+							try {
+								collapseInstance.show();
+							} catch (e) {
+								menu.classList.add('show');
+								menu.style.display = '';
+							}
+						}
+					});
+
+					return { toggle, menu, forceCollapse };
+				};
+
+				const submenuConfigs = Array.from(document.querySelectorAll('.submenu-toggle'))
+					.map(setupSubmenu)
+					.filter(Boolean);
+
+				document.querySelectorAll('#sidebar-menu > li > a').forEach((link) => {
+					link.addEventListener('click', function () {
+						submenuConfigs.forEach(({ forceCollapse }) => forceCollapse());
+					});
+				});
+			});
+		</script>
+		<script>
+			// Notification System
+			(function() {
+				const notificationBadge = document.getElementById('notificationBadge');
+				const notificationCount = document.getElementById('notificationCount');
+				const notificationList = document.getElementById('notificationList');
+				const markAllReadBtn = document.getElementById('markAllReadBtn');
+
+				function loadNotifications() {
+					fetch('<?php echo e(route("notifications.recent")); ?>', {
+						headers: {
+							'X-Requested-With': 'XMLHttpRequest',
+							'Accept': 'application/json'
+						}
+					})
+					.then(response => response.json())
+					.then(data => {
+						updateBadge(data.unread_count);
+						updateNotificationList(data.notifications);
+					})
+					.catch(error => console.error('Error loading notifications:', error));
+				}
+
+				function updateBadge(count) {
+					if (count > 0) {
+						notificationBadge.textContent = count > 99 ? '99+' : count;
+						notificationBadge.classList.remove('d-none');
+					} else {
+						notificationBadge.classList.add('d-none');
+					}
+					notificationCount.textContent = count;
+				}
+
+				function updateNotificationList(notifications) {
+					if (notifications.length === 0) {
+						notificationList.innerHTML = `
+							<div class="text-center py-32 text-secondary-light">
+								<iconify-icon icon="solar:bell-off-outline" class="text-3xl mb-2"></iconify-icon>
+								<p class="mb-0">No notifications</p>
+							</div>
+						`;
+						return;
+					}
+
+					notificationList.innerHTML = notifications.map(notif => {
+						const isRead = notif.read_at ? '' : 'bg-primary-50';
+						const iconColorClass = `text-${notif.icon_color}-main`;
+						const iconBgClass = `bg-${notif.icon_color}-focus`;
+						
+						return `
+							<div class="px-24 py-12 d-flex align-items-start gap-3 mb-2 justify-content-between ${isRead} notification-item" data-id="${notif.id}">
+								<a href="${notif.url}" class="d-flex align-items-center gap-3 text-decoration-none flex-grow-1" onclick="markNotificationAsRead('${notif.id}')">
+									<span class="w-40-px h-40-px rounded-circle flex-shrink-0 ${iconBgClass} d-flex justify-content-center align-items-center">
+										<iconify-icon icon="${notif.icon}" class="${iconColorClass} text-xl"></iconify-icon>
+									</span>
+									<div>
+										<h6 class="text-md fw-semibold mb-4">${notif.title}</h6>
+										<p class="mb-0 text-sm text-secondary-light">${notif.message}</p>
+										<p class="mb-0 text-xs text-secondary-light mt-1">${notif.created_at}</p>
+									</div>
+								</a>
+							</div>
+						`;
+					}).join('');
+				}
+
+				function markNotificationAsRead(id) {
+					fetch(`/notifications/${id}/read`, {
+						method: 'POST',
+						headers: {
+							'X-Requested-With': 'XMLHttpRequest',
+							'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+							'Accept': 'application/json'
+						}
+					})
+					.then(response => response.json())
+					.then(data => {
+						if (data.success) {
+							loadNotifications();
+						}
+					});
+				}
+
+				if (markAllReadBtn) {
+					markAllReadBtn.addEventListener('click', function(e) {
+						e.preventDefault();
+						fetch('<?php echo e(route("notifications.mark-all-read")); ?>', {
+							method: 'POST',
+							headers: {
+								'X-Requested-With': 'XMLHttpRequest',
+								'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+								'Accept': 'application/json'
+							}
+						})
+						.then(response => response.json())
+						.then(data => {
+							if (data.success) {
+								loadNotifications();
+							}
+						});
+					});
+				}
+
+				// Load notifications on page load
+				loadNotifications();
+
+				// Poll for new notifications every 30 seconds
+				setInterval(loadNotifications, 30000);
+
+				// Reload when dropdown is opened
+				const dropdown = document.getElementById('notificationDropdown');
+				if (dropdown) {
+					dropdown.addEventListener('click', function() {
+						loadNotifications();
+					});
+				}
+
+				// Make markNotificationAsRead available globally
+				window.markNotificationAsRead = markNotificationAsRead;
+			})();
+		</script>
+		<?php echo $__env->yieldPushContent('scripts'); ?>
+</body>
+</html>
+<?php /**PATH D:\xampp\htdocs\ecom123\resources\views/layouts/admin.blade.php ENDPATH**/ ?>
