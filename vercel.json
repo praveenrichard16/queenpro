@@ -1,7 +1,7 @@
 {
   "version": 2,
   "buildCommand": "composer install --no-dev --optimize-autoloader && npm install && npm run build",
-  "outputDirectory": ".",
+  "outputDirectory": "dist",
   "installCommand": "npm install",
   "framework": null,
   "routes": [
