@@ -1,21 +1,21 @@
 {
   "version": 2,
   "buildCommand": "composer install --no-dev --optimize-autoloader && npm install && npm run build",
-  "outputDirectory": "public",
+  "outputDirectory": ".",
   "installCommand": "npm install",
   "framework": null,
   "routes": [
     {
       "src": "/build/(.*)",
-      "dest": "/build/$1"
+      "dest": "/public/build/$1"
     },
     {
       "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))",
-      "dest": "/$1"
+      "dest": "/public/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.php"
+      "dest": "/public/index.php"
     }
   ],
   "functions": {
