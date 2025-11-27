@@ -2,7 +2,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build && mkdir -p dist && cp -r . dist/ && rm -rf dist/node_modules dist/.git dist/dist 2>/dev/null || true",
+        "build": "vite build && mkdir -p dist && rsync -av --exclude='node_modules' --exclude='.git' --exclude='dist' --exclude='.vercel' . dist/ || (mkdir -p dist && cp -r app bootstrap config database public resources routes storage vendor artisan composer.json composer.lock package.json dist/ 2>/dev/null || true)",
         "dev": "vite"
     },
     "devDependencies": {
