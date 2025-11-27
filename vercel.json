@@ -7,19 +7,19 @@
   "routes": [
     {
       "src": "/build/(.*)",
-      "dest": "/public/build/$1"
+      "dest": "/dist/public/build/$1"
     },
     {
       "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))",
-      "dest": "/public/$1"
+      "dest": "/dist/public/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/public/index.php"
+      "dest": "/dist/public/index.php"
     }
   ],
   "functions": {
-    "public/index.php": {
+    "dist/public/index.php": {
       "runtime": "php@8.1"
     }
   }
