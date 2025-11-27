@@ -411,7 +411,7 @@
     <section class="py-10 md:py-16">
         <div class="container">
             <div class="text-center mb-10">
-                <div class="text-button-uppercase text-green mb-3">WowDash Boutique</div>
+                <div class="text-button-uppercase text-green mb-3">Queen Pro Boutique</div>
                 <h2 class="heading2 text-black mb-4">Effortless luxury, delivered with heart.</h2>
                 <p class="body1 text-secondary2 mb-6">Discover curated edits, emerging designers, and everyday essentials tailored for life in the GCC.</p>
                 <div class="flex flex-col md:flex-row items-center justify-center gap-3">

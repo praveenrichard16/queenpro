@@ -1,6 +1,6 @@
-# Laravel Ecommerce Store
+# Queen Pro - E-commerce Platform
 
-A complete ecommerce application built with Laravel featuring product catalog, shopping cart, order management, and more.
+Queen Pro is a complete e-commerce application built with Laravel featuring product catalog, shopping cart, order management, lead management, drip campaigns, WhatsApp integration, and more.
 
 ## Features
 
@@ -41,14 +41,14 @@ php artisan key:generate
 
 ### Step 3: Database Configuration
 
-1. Create a MySQL database named `ecommerce_store`
+1. Create a MySQL database (e.g., `queen_pro` or `ecommerce_store`)
 2. Update your `.env` file with database credentials:
 
 ```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=ecommerce_store
+DB_DATABASE=queen_pro
 DB_USERNAME=root
 DB_PASSWORD=your_password
 ```

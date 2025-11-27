@@ -18,7 +18,7 @@ $encryption = $smtp['encryption'] ?? env('MAIL_ENCRYPTION', 'tls');
 $username = $smtp['username'] ?? env('MAIL_USERNAME');
 $password = $smtp['password'] ?? env('MAIL_PASSWORD');
 $fromAddress = $smtp['from_email'] ?? env('MAIL_FROM_ADDRESS', 'hello@example.com');
-$fromName = $smtp['from_name'] ?? env('MAIL_FROM_NAME', 'WowDash');
+$fromName = $smtp['from_name'] ?? env('MAIL_FROM_NAME', 'Queen Pro');
 
 return [
 

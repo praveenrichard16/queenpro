@@ -128,7 +128,7 @@
 								</div>
 								<div class="col-md-6">
 									<label class="form-label text-secondary-light">From Name</label>
-									<input type="text" name="from_name" class="form-control bg-neutral-50 radius-12" value="{{ old('from_name', data_get($integrations['smtp'], 'from_name')) }}" placeholder="WowDash Store">
+									<input type="text" name="from_name" class="form-control bg-neutral-50 radius-12" value="{{ old('from_name', data_get($integrations['smtp'], 'from_name')) }}" placeholder="Queen Pro Store">
 								</div>
 								<div class="col-md-6">
 									<label class="form-label text-secondary-light">From Email</label>

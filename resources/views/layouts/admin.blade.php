@@ -4,7 +4,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="csrf-token" content="{{ csrf_token() }}">
-		<title>@yield('title', 'WowDash Admin')</title>
+		<title>@yield('title', 'Queen Pro Admin')</title>
 		@php
 			$favicon = !empty($appSettings['site_favicon'])
 				? asset('storage/'.$appSettings['site_favicon'])

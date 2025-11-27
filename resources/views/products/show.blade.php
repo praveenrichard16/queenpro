@@ -44,7 +44,7 @@
         :breadcrumbs="$breadcrumbs"
         :eyebrow="$product->category?->name ?? 'Product detail'"
         :title="$product->name"
-        description="Crafted with premium materials and delivered with the care you expect from WowDash."
+        description="Crafted with premium materials and delivered with the care you expect from Queen Pro."
     />
 
     <div class="product-detail variable">

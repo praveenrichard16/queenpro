@@ -11,7 +11,7 @@
    - Install the LTS version
 
 3. **Set up the database**:
-   - Create a MySQL database named `ecommerce_store`
+   - Create a MySQL database (e.g., `queen_pro` or `ecommerce_store`)
    - Update the database credentials in `.env` file
 
 4. **Run the installation script**:

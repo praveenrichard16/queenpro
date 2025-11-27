@@ -1,7 +1,7 @@
 {
-    "name": "laravel/ecommerce",
+    "name": "queen-pro/ecommerce",
     "type": "project",
-    "description": "E-commerce application built with Laravel",
+    "description": "Queen Pro - Complete E-commerce application built with Laravel",
     "keywords": ["laravel", "ecommerce", "shopping", "cart"],
     "license": "MIT",
     "require": {
